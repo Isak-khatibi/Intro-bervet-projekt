@@ -1,5 +1,6 @@
 import numpy as np
 from scipy import interpolate
+import matplotlib.pyplot as plt
 
 def load_route(route):
     """ 
@@ -31,11 +32,19 @@ def save_route(route, distance_km, speed_kmph):
     np.savez(route, distance_km=distance_km, speed_kmph=speed_kmph)
 
 ### PART 1A ###
-def consumption(v):
-    
+def consumption(v:np.array):
+    a1 = 546.6
+    a2 = 50.31
+    a3 = 0.2584
+    a4 = 0.008210
+    C = a1*(1/v) + a2 + a3*v + a4*v**2
+    plt.plot(v, C)
+    plt.show()
+    return C
+"""print(consumption(np.array([[2,3,4],[3,3,3]])))"""
 
 ### PART 1B ###
- def velocity(x, route):
+def velocity(x, route):
     # ALREADY IMPLEMENTED!
     """
     Interpolates data in given route file, and evaluates the function
