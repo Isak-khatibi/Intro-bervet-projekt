@@ -39,9 +39,10 @@ def consumption(v:np.array):
     a4 = 0.008210
     C = a1*(1/v) + a2 + a3*v + a4*v**2
     plt.plot(v, C)
+    plt.xlim(0, 200)
     plt.show()
     return C
-"""print(consumption(np.array([[2,3,4],[3,3,3]])))"""
+
 
 ### PART 1B ###
 def velocity(x, route):
@@ -59,12 +60,26 @@ def velocity(x, route):
     v = interpolate.pchip_interpolate(distance_km, speed_kmph,x)
     return v
 
+def trapetsmetoden(n, a, b, funk):
+    h = int((b - a) / n)
+    x = np.linspace(a, b, n + 1)
+
+    T = funk(x[0]) + funk(x[-1])
+    T += 2 * np.sum(funk(x[1:-1]))
+
+    return (h / 2) * T
+
 ### PART 2A ###
 def time_to_destination(x, route, n):
-    # REMOVE THE FOLLOWING LINE AND WRITE YOUR SOLUTION
-    raise NotImplementedError('time_to_destination not implemented yet!')
+    integrand = 1/(velocity(x, route))
+    
+    T = trapetsmetoden(n, 0 , x, integrand) 
+    return T
 
-### PART 2B ###
+
+
+print(time_to_destination(10, 'speed_anna.npz', 100))
+### PART 2B ##
 def total_consumption(x, route, n):
     # REMOVE THE FOLLOWING LINE AND WRITE YOUR SOLUTION
     raise NotImplementedError('total_consumption not implemented yet!')
