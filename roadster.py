@@ -38,9 +38,11 @@ def consumption(v:np.array):
     a3 = 0.2584
     a4 = 0.008210
     C = a1*(1/v) + a2 + a3*v + a4*v**2
-    plt.plot(v, C)
+    '''plt.plot(v, C)
+    plt.xlabel('v (km/h)')
+    plt.ylabel('C (Wh/km)')
     plt.xlim(0, 200)
-    plt.show()
+    plt.show()'''
     return C
 
 
@@ -61,7 +63,7 @@ def velocity(x, route):
     return v
 
 def trapetsmetoden(n, a, b, funk):
-    h = int((b - a) / n)
+    h = (b - a) / n
     x = np.linspace(a, b, n + 1)
 
     T = funk(x[0]) + funk(x[-1])
@@ -71,18 +73,27 @@ def trapetsmetoden(n, a, b, funk):
 
 ### PART 2A ###
 def time_to_destination(x, route, n):
-    integrand = 1/(velocity(x, route))
+    funk_s = lambda s : 1/(velocity(s, route))
     
-    T = trapetsmetoden(n, 0 , x, integrand) 
+    T = trapetsmetoden(n, 0 , x, funk_s) 
+    
     return T
 
 
 
-print(time_to_destination(10, 'speed_anna.npz', 100))
+'''print(time_to_destination(65, 'speed_anna.npz', 1000000))
+print(time_to_destination(65, 'speed_elsa.npz', 1000000))'''
 ### PART 2B ##
+
 def total_consumption(x, route, n):
-    # REMOVE THE FOLLOWING LINE AND WRITE YOUR SOLUTION
-    raise NotImplementedError('total_consumption not implemented yet!')
+    c_vs = lambda s: consumption(velocity(s, route))
+
+    E = trapetsmetoden(n, 0, x, c_vs)
+
+    return E
+
+print(total_consumption(65, 'speed_anna.npz',  10000))
+print(total_consumption(65, 'speed_elsa.npz',  10000))
 
 ### PART 3A ###
 def distance(T, route): 
