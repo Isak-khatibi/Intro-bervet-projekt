@@ -92,8 +92,21 @@ def total_consumption(x, route, n):
 
     return E
 
-print(total_consumption(65, 'speed_anna.npz',  10000))
-print(total_consumption(65, 'speed_elsa.npz',  10000))
+'''print(total_consumption(65, 'speed_anna.npz',  1000000))
+print(total_consumption(65, 'speed_elsa.npz',  1000000))'''
+
+def Tolerans(n, integral, x, route):
+    
+    
+    while n < 10000:
+        delta =  integral(x, route, 2*n) - integral(x, route, n)
+        if abs(delta) < 0.5:
+            rätt_intervall = 2*n
+            return rätt_intervall
+        n = 2*n
+    return 'testa på ett högre intervall'
+    
+print(Tolerans(100, total_consumption, 65, 'speed_anna.npz'))
 
 ### PART 3A ###
 def distance(T, route): 
