@@ -92,21 +92,46 @@ def total_consumption(x, route, n):
 
     return E
 
-'''print(total_consumption(65, 'speed_anna.npz',  1000000))
-print(total_consumption(65, 'speed_elsa.npz',  1000000))'''
 
-def Tolerans(n, integral, x, route):
+
+def Tolerans(n, integral, x, route, tol):
     
     
     while n < 10000:
         delta =  integral(x, route, 2*n) - integral(x, route, n)
-        if abs(delta) < 0.5:
+        if abs(delta) < tol:
             rätt_intervall = 2*n
             return rätt_intervall
-        n = 2*n
+        n += 1
+
     return 'testa på ett högre intervall'
+
+def Konvergensstudie(integral,route, x = 65 ):
+    integral_exakt = integral(x, route , 50000000)
+    n = 1
+    int_fel = []
+    n_plotlist = []
+    förväntad = []
     
-print(Tolerans(100, total_consumption, 65, 'speed_anna.npz'))
+    
+    while n < 50000000:
+        n_plotlist.append(n)
+        int_fel.append(abs(integral_exakt - integral(x, route, n)))
+      
+        C = int_fel[0] * n_plotlist[0]**2
+        förväntad.append(C / n**2)
+        n = 2*n
+
+    plt.loglog(n_plotlist, int_fel)
+    plt.plot(n_plotlist, förväntad, 'r--')
+    plt.xlabel('n, antal delintervall')
+    plt.ylabel('integralfel')
+    return plt.show()
+'''print(total_consumption(65, 'speed_anna.npz',  1000000))
+print(total_consumption(65, 'speed_elsa.npz',  1000000))'''
+'''print(Tolerans(100, time_to_destination, 65, 'speed_anna.npz', 0.01))'''
+
+Konvergensstudie(time_to_destination, 'speed_anna.npz')
 
 ### PART 3A ###
 def distance(T, route): 
